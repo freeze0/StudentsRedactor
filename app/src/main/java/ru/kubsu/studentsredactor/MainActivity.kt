@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var studentsTv: TextView
 
     private val viewModel: ActivityMainModel by lazy {
-        var provider = ViewModelProvider(this)
+        val provider = ViewModelProvider(this)
         provider.get(ActivityMainModel::class.java)
     }
 
