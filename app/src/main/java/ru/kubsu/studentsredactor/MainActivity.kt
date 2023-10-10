@@ -37,14 +37,18 @@ class MainActivity : AppCompatActivity() {
         studentsTv = findViewById(R.id.tvMain)
         updateStudent()
 
-        btnNext.setOnClickListener{if (viewModel.getCount() == 0){ }
-        else {viewModel.moveToNext(); updateStudent()}}
-        btnPrev.setOnClickListener{if (viewModel.getCount() == 0){ }
-        else {viewModel.moveToPrev(); updateStudent()}}
+        btnNext.setOnClickListener{if (viewModel.getCount() != 0){
+            viewModel.moveToNext(); updateStudent()}
+        }
+        btnPrev.setOnClickListener{if (viewModel.getCount() != 0){
+            viewModel.moveToPrev(); updateStudent()}
+        }
 
         btnChange.setOnClickListener{
-            val currentStudent = viewModel.getCurrentStudent()
-            currentStudent?.let { startRedactorActivity(it) }
+            if (viewModel.getCount() != 0){
+                val currentStudent = viewModel.getCurrentStudent()
+                currentStudent?.let { startRedactorActivity(it) }
+            }
         }
 
         btnAdd.setOnClickListener {
@@ -58,9 +62,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.removeCurrentStudent()
                 updateStudent()
             }
-            if (viewModel.getCount() == 0){
-            }
-            else {
+            if (viewModel.getCount() != 0){
                 viewModel.removeCurrentStudent()
                 viewModel.moveToPrev()
                 updateStudent()
