@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Students Redactor</string>
+    <string name="add_button">Добавить</string>
+    <string name="change_button">Изменить</string>
+    <string name="delete_button">Удалить</string>
+    <string name="next_button">Следующий</string>
+    <string name="prev_button">Предыдущий</string>
+    <string name="text_view_name">Имя: </string>
+    <string name="text_view_surname">Фамилия: </string>
+    <string name="text_view_patronymic">Отчество: </string>
+    <string name="text_view_group">Группа: </string>
+    <string name="text_view_course">Курс: </string>
+    <string name="save_button">Сохранить</string>
+</resources>
