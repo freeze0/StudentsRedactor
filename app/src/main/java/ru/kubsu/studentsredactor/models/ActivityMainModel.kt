@@ -43,6 +43,15 @@ class ActivityMainModel : ViewModel() {
         currentIndex = (studentList.size + currentIndex - 1) % studentList.size
     }
 
+    fun getMaxId(): Int {
+        var _max = -1
+        for (student in studentList) {
+            if (student.studentId > _max)
+                _max = student.studentId
+        }
+        return _max
+    }
+
     fun printCurrentStudentInfo(): String {
         if (getCount()==0)
             return "No students"

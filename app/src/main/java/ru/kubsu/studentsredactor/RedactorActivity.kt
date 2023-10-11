@@ -54,7 +54,15 @@ class RedactorActivity : AppCompatActivity() {
                     val updatedSurname = editTextSurname.text.toString()
                     val updatedPatronymic = editTextPatronymic.text.toString()
                     val updatedGroup = editTextGroup.text.toString()
-                    val updatedCourse = editTextCourse.text.toString().toInt()
+
+                    val stroka = editTextCourse.text.toString()
+                    var updatedCourse = 0
+                    if (stroka.isNotEmpty()){
+                        updatedCourse = editTextCourse.text.toString().toInt()
+                    }
+                    else {
+                        updatedCourse = 0
+                    }
 
                     val resultIntent = Intent()
                     resultIntent.putExtra("updatedName", updatedName)

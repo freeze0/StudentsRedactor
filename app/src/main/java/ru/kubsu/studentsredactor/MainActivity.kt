@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnDelete.setOnClickListener {
-            if (viewModel.getCount() == 1){ //надо допилисть пролистывание если 0 элементов
+            if (viewModel.getCount() == 1){
                 viewModel.removeCurrentStudent()
                 updateStudent()
             }
@@ -69,7 +69,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    // надо пределать логику чтобы после удаления элемента в середине все равно листалось!!!
     private fun updateStudent() {
         val studentInfo = viewModel.printCurrentStudentInfo()
         studentsTv.setText(studentInfo)
@@ -116,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             val data = result.data
             data?.let {
-                val newId = viewModel.getCount()
+                val newId = viewModel.getMaxId() + 1
                 val updatedName = it.getStringExtra("updatedName") ?: ""
                 val updatedSurname = it.getStringExtra("updatedSurname") ?: ""
                 val updatedPatronymic = it.getStringExtra("updatedPatronymic") ?: ""
@@ -124,6 +123,7 @@ class MainActivity : AppCompatActivity() {
                 val updatedCourse = it.getIntExtra("updatedCourse", 0)
                 viewModel.addStudent(Student(newId, updatedName, updatedSurname, updatedPatronymic,
                     updatedGroup, updatedCourse))
+                updateStudent()
             }
         }
     }
