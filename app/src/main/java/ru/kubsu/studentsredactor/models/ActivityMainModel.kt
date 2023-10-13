@@ -23,10 +23,6 @@ class ActivityMainModel : ViewModel() {
         return studentList.size
     }
 
-    fun getCurrentIndex(): Int{
-        return currentIndex
-    }
-
     fun removeCurrentStudent() {
         studentList.removeAt(currentIndex)
     }
@@ -53,21 +49,15 @@ class ActivityMainModel : ViewModel() {
     }
 
     fun printCurrentStudentInfo(): String {
-        if (getCount()==0)
+        if (getCount() == 0)
             return "No students"
         val student = studentList[currentIndex]
         return if (student != null) {
-            buildString {
-                appendLine("Student ID: ${student.studentId}")
-                appendLine("Name: ${student.name}")
-                appendLine("Surname: ${student.surname}")
-                appendLine("Patronymic: ${student.patronymic}")
-                appendLine("Group: ${student.group}")
-                appendLine("Course: ${student.course}")
-            }
+            student.toString()
         } else
             "No student at current index"
     }
+
 
 
 }
