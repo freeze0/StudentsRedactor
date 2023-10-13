@@ -54,7 +54,8 @@ class MainActivity : AppCompatActivity() {
         btnAdd.setOnClickListener {
             val intent = Intent(this, RedactorActivity::class.java)
             intent.putExtra("add_intent", true)
-            addStudentActivityResult.launch(intent)
+            //addStudentActivityResult.launch(intent)
+            startActivity(intent)
         }
 
         btnDelete.setOnClickListener {
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun updateStudent() {
         val studentInfo = viewModel.printCurrentStudentInfo()
         studentsTv.setText(studentInfo)
@@ -83,49 +85,50 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("patronymic", student.patronymic)
         intent.putExtra("group", student.group)
         intent.putExtra("course", student.course)
-        editStudentActivityResult.launch(intent)
+        //editStudentActivityResult.launch(intent)
+        startActivity(intent)
     }
 
-    private val editStudentActivityResult = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val data = result.data
-            data?.let {
-                val updatedName = it.getStringExtra("updatedName") ?: ""
-                val updatedSurname = it.getStringExtra("updatedSurname") ?: ""
-                val updatedPatronymic = it.getStringExtra("updatedPatronymic") ?: ""
-                val updatedGroup = it.getStringExtra("updatedGroup") ?: ""
-                val updatedCourse = it.getIntExtra("updatedCourse", 0)
-
-                val currentStudent = viewModel.getCurrentStudent()
-                currentStudent?.let {
-                    it.name = updatedName
-                    it.surname = updatedSurname
-                    it.patronymic = updatedPatronymic
-                    it.group = updatedGroup
-                    it.course = updatedCourse
-                    updateStudent()
-                }
-            }
-        }
-    }
-
-    private val addStudentActivityResult = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val data = result.data
-            data?.let {
-                val newId = viewModel.getMaxId() + 1
-                val updatedName = it.getStringExtra("updatedName") ?: ""
-                val updatedSurname = it.getStringExtra("updatedSurname") ?: ""
-                val updatedPatronymic = it.getStringExtra("updatedPatronymic") ?: ""
-                val updatedGroup = it.getStringExtra("updatedGroup") ?: ""
-                val updatedCourse = it.getIntExtra("updatedCourse", 0)
-                viewModel.addStudent(Student(newId, updatedName, updatedSurname, updatedPatronymic,
-                    updatedGroup, updatedCourse))
-                updateStudent()
-            }
-        }
-    }
+//    private val editStudentActivityResult = registerForActivityResult(
+//        ActivityResultContracts.StartActivityForResult()) { result ->
+//        if (result.resultCode == Activity.RESULT_OK) {
+//            val data = result.data
+//            data?.let {
+//                val updatedName = it.getStringExtra("updatedName") ?: ""
+//                val updatedSurname = it.getStringExtra("updatedSurname") ?: ""
+//                val updatedPatronymic = it.getStringExtra("updatedPatronymic") ?: ""
+//                val updatedGroup = it.getStringExtra("updatedGroup") ?: ""
+//                val updatedCourse = it.getIntExtra("updatedCourse", 0)
+//
+//                val currentStudent = viewModel.getCurrentStudent()
+//                currentStudent?.let {
+//                    it.name = updatedName
+//                    it.surname = updatedSurname
+//                    it.patronymic = updatedPatronymic
+//                    it.group = updatedGroup
+//                    it.course = updatedCourse
+//                    updateStudent()
+//                }
+//            }
+//        }
+//    }
+//
+//    private val addStudentActivityResult = registerForActivityResult(
+//        ActivityResultContracts.StartActivityForResult()) { result ->
+//        if (result.resultCode == Activity.RESULT_OK) {
+//            val data = result.data
+//            data?.let {
+//                val newId = viewModel.getMaxId() + 1
+//                val updatedName = it.getStringExtra("updatedName") ?: ""
+//                val updatedSurname = it.getStringExtra("updatedSurname") ?: ""
+//                val updatedPatronymic = it.getStringExtra("updatedPatronymic") ?: ""
+//                val updatedGroup = it.getStringExtra("updatedGroup") ?: ""
+//                val updatedCourse = it.getIntExtra("updatedCourse", 0)
+//                viewModel.addStudent(Student(newId, updatedName, updatedSurname, updatedPatronymic,
+//                    updatedGroup, updatedCourse))
+//                updateStudent()
+//            }
+//        }
+//    }
 
 }
