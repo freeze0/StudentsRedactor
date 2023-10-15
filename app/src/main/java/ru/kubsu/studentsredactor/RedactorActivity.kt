@@ -2,10 +2,11 @@ package ru.kubsu.studentsredactor
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ru.kubsu.studentsredactor.data.Student
 import ru.kubsu.studentsredactor.models.ActivityMainModel
@@ -17,16 +18,16 @@ class RedactorActivity : AppCompatActivity() {
     private lateinit var editTextGroup: EditText
     private lateinit var editTextCourse: EditText
     private lateinit var btnSave: Button
-
-    private val viewModel: ActivityMainModel by lazy {
-        val provider = ViewModelProvider(this)
-        provider.get(ActivityMainModel::class.java)
-    }
+    private lateinit var viewModel: ActivityMainModel
+    private lateinit var myList: ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_redactor)
 
+        var myList = ArrayList<String>()
+
+        viewModel = ViewModelProvider(this).get(ActivityMainModel::class.java)
 
         editTextName = findViewById(R.id.edtName)
         editTextSurname = findViewById(R.id.edtSurname)
@@ -49,16 +50,14 @@ class RedactorActivity : AppCompatActivity() {
         }
 
         btnSave.setOnClickListener {
-            if (editTextName.text.toString().isBlank()){
-                editTextName.error="Введите имя!"
-            }
-            else {
+            if (editTextName.text.toString().isBlank()) {
+                editTextName.error = "Введите имя!"
+            } else {
                 if (editTextSurname.text.toString().isBlank()) {
-                    editTextSurname.error="Введите Фамилию!"
-                    editTextName.error=null
-                }
-                else {
-                    editTextSurname.error=null
+                    editTextSurname.error = "Введите Фамилию!"
+                    editTextName.error = null
+                } else {
+                    editTextSurname.error = null
                     if (intent.getBooleanExtra("add_intent", true)) {
 
                         val updatedName = editTextName.text.toString()
@@ -73,57 +72,44 @@ class RedactorActivity : AppCompatActivity() {
                         } else {
                             updatedCourse = 0
                         }
-
                         val newId = viewModel.getMaxId() + 1
-                        viewModel.addStudent(
-                            Student(
-                                newId, updatedName, updatedSurname, updatedPatronymic,
-                                updatedGroup, updatedCourse
-                            )
-                        )
-                       // MainActivity.updateStudent()
+
+                        myList.add(updatedName)
+                        myList.add(updatedSurname)
+                        myList.add(updatedPatronymic)
+                        myList.add(updatedGroup)
+                        myList.add(updatedCourse.toString())
+                        myList.add(newId.toString())
+                        val intent = Intent()
+                        intent.putExtra("List", myList)
+                        setResult(RESULT_OK, intent);
                     }
-                    var flag = false
-                    if (intent.getBooleanExtra("add_intent", false) && flag == false) {
-                        flag = true
+
+                    else {
                         val updatedName = editTextName.text.toString()
                         val updatedSurname = editTextSurname.text.toString()
                         val updatedPatronymic = editTextPatronymic.text.toString()
                         val updatedGroup = editTextGroup.text.toString()
                         val stroka = editTextCourse.text.toString()
                         var updatedCourse = 0
+
                         if (stroka.isNotEmpty()) {
                             updatedCourse = editTextCourse.text.toString().toInt()
                         } else {
                             updatedCourse = 0
                         }
 
-                        val currentStudent = viewModel.getCurrentStudent()
-                            currentStudent?.let {
-                                it.name = updatedName
-                                it.surname = updatedSurname
-                                it.patronymic = updatedPatronymic
-                                it.group = updatedGroup
-                                it.course = updatedCourse
-                            }
-                        //updateStudent()
+                        val intent = Intent()
+                        intent.putExtra("updatedName", updatedName)
+                        intent.putExtra("updatedSurname", updatedSurname)
+                        intent.putExtra("updatedPatronymic", updatedPatronymic)
+                        intent.putExtra("updatedGroup",updatedGroup)
+                        intent.putExtra("updatedCourse", updatedCourse)
+                        setResult(RESULT_OK, intent);
                     }
-
-
-//                    val resultIntent = Intent()
-//                    resultIntent.putExtra("updatedName", updatedName)
-//                    resultIntent.putExtra("updatedSurname", updatedSurname)
-//                    resultIntent.putExtra("updatedPatronymic", updatedPatronymic)
-//                    resultIntent.putExtra("updatedGroup", updatedGroup)
-//                    resultIntent.putExtra("updatedCourse", updatedCourse)
-//
-//                    setResult(Activity.RESULT_OK, resultIntent)
-//                    finish()
-
                 }
             }
         }
-
 
     }
 

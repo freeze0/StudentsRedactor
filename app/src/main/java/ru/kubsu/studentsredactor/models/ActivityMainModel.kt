@@ -5,7 +5,6 @@ import ru.kubsu.studentsredactor.data.Student
 
 class ActivityMainModel : ViewModel() {
     private val studentList: MutableList<Student> = mutableListOf()
-
     init {
         addStudent(Student(0, "Иван", "Иванов", "Иванович",
             "13", 1))
